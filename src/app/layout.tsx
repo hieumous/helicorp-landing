@@ -2,19 +2,23 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
+import { LazyToaster } from "@/components/lazy-toaster";
 import { siteConfig } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin", "vietnamese"],
+  weight: ["400", "600"],
   display: "swap",
+  preload: true,
 });
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
   subsets: ["latin", "vietnamese"],
+  weight: ["600", "700"],
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -71,6 +75,15 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
     >
+      <head>
+        <link
+          rel="preload"
+          href="/images/helix-hero.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <ThemeProvider
           attribute="class"
@@ -79,7 +92,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
-          <Toaster richColors position="top-center" />
+          <LazyToaster richColors position="top-center" />
         </ThemeProvider>
       </body>
     </html>

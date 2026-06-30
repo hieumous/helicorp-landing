@@ -6,20 +6,25 @@ import { LazyScrollProgress } from "@/components/lazy-scroll-progress";
 import { LazyChat } from "@/components/lazy-chat";
 import { siteConfig } from "@/lib/site";
 
-const Features = dynamic(() =>
-  import("@/components/sections/features").then((m) => m.Features)
+const Features = dynamic(
+  () => import("@/components/sections/features").then((m) => m.Features),
+  { loading: () => <div className="min-h-[720px]" aria-hidden /> }
 );
-const Showcase = dynamic(() =>
-  import("@/components/sections/showcase").then((m) => m.Showcase)
+const Showcase = dynamic(
+  () => import("@/components/sections/showcase").then((m) => m.Showcase),
+  { loading: () => <div className="min-h-[640px]" aria-hidden /> }
 );
-const Specs = dynamic(() =>
-  import("@/components/sections/specs").then((m) => m.Specs)
+const Specs = dynamic(
+  () => import("@/components/sections/specs").then((m) => m.Specs),
+  { loading: () => <div className="min-h-[520px]" aria-hidden /> }
 );
-const Testimonials = dynamic(() =>
-  import("@/components/sections/testimonials").then((m) => m.Testimonials)
+const Testimonials = dynamic(
+  () => import("@/components/sections/testimonials").then((m) => m.Testimonials),
+  { loading: () => <div className="min-h-[400px]" aria-hidden /> }
 );
-const Newsletter = dynamic(() =>
-  import("@/components/sections/newsletter").then((m) => m.Newsletter)
+const Newsletter = dynamic(
+  () => import("@/components/sections/newsletter").then((m) => m.Newsletter),
+  { loading: () => <div className="min-h-[480px]" aria-hidden /> }
 );
 
 const jsonLd = {
