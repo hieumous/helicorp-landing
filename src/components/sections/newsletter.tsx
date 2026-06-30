@@ -12,6 +12,47 @@ import { Reveal } from "@/components/motion/reveal";
 import { subscribeSchema, type SubscribeInput } from "@/lib/validations";
 import { siteConfig } from "@/lib/site";
 
+function LazyMapEmbed() {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [show, setShow] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShow(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="absolute inset-0">
+      {show ? (
+        <iframe
+          title={`Bản đồ ${siteConfig.brand}`}
+          src={siteConfig.mapEmbed}
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="h-full w-full border-0 grayscale-[20%]"
+          allowFullScreen
+        />
+      ) : (
+        <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
+          <MapPin className="mr-2 size-4" />
+          Đang tải bản đồ...
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Newsletter() {
   const [done, setDone] = React.useState(false);
 
@@ -56,15 +97,8 @@ export function Newsletter() {
             <div className="grid lg:grid-cols-2">
               {/* Cột trái: Google Map + thông tin liên hệ */}
               <div className="flex flex-col border-b border-border/60 lg:border-b-0 lg:border-r">
-                <div className="relative h-64 w-full overflow-hidden lg:h-full lg:min-h-[28rem]">
-                  <iframe
-                    title={`Bản đồ ${siteConfig.brand}`}
-                    src={siteConfig.mapEmbed}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    className="absolute inset-0 h-full w-full border-0 grayscale-[20%]"
-                    allowFullScreen
-                  />
+                <div className="relative h-64 w-full overflow-hidden bg-muted lg:h-full lg:min-h-[28rem]">
+                  <LazyMapEmbed />
                 </div>
                 <div className="grid gap-4 p-6 sm:p-8">
                   <div className="flex items-start gap-3">

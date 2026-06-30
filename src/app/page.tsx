@@ -1,14 +1,26 @@
+import dynamic from "next/dynamic";
 import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
-import { Features } from "@/components/sections/features";
-import { Showcase } from "@/components/sections/showcase";
-import { Specs } from "@/components/sections/specs";
-import { Testimonials } from "@/components/sections/testimonials";
-import { Newsletter } from "@/components/sections/newsletter";
 import { Footer } from "@/components/sections/footer";
-import { ScrollProgress } from "@/components/scroll-progress";
-import { ChatWidget } from "@/components/chat/chat-widget";
+import { LazyScrollProgress } from "@/components/lazy-scroll-progress";
+import { LazyChat } from "@/components/lazy-chat";
 import { siteConfig } from "@/lib/site";
+
+const Features = dynamic(() =>
+  import("@/components/sections/features").then((m) => m.Features)
+);
+const Showcase = dynamic(() =>
+  import("@/components/sections/showcase").then((m) => m.Showcase)
+);
+const Specs = dynamic(() =>
+  import("@/components/sections/specs").then((m) => m.Specs)
+);
+const Testimonials = dynamic(() =>
+  import("@/components/sections/testimonials").then((m) => m.Testimonials)
+);
+const Newsletter = dynamic(() =>
+  import("@/components/sections/newsletter").then((m) => m.Newsletter)
+);
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -31,7 +43,7 @@ const jsonLd = {
       name: siteConfig.name,
       description: siteConfig.description,
       brand: { "@type": "Brand", name: siteConfig.brand },
-      image: `${siteConfig.url}/images/helix-hero.png`,
+      image: `${siteConfig.url}/images/helix-hero.webp`,
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: "4.9",
@@ -55,7 +67,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ScrollProgress />
+      <LazyScrollProgress />
       <Navbar />
       <main className="flex-1">
         <Hero />
@@ -66,7 +78,7 @@ export default function Home() {
         <Newsletter />
       </main>
       <Footer />
-      <ChatWidget />
+      <LazyChat />
     </>
   );
 }
