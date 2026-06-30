@@ -53,7 +53,7 @@ export function Testimonials() {
 
         {/* Marquee: chỉ hiện ~3 thẻ trong khung, tự trượt ngang, dừng khi hover */}
         <div className="group relative mt-14 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
-          <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+          <div className="flex w-max animate-marquee">
             {[...testimonials, ...testimonials].map((t, i) => (
               <TestimonialCard key={i} {...t} />
             ))}
