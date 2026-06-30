@@ -18,3 +18,63 @@ export const navLinks = [
   { label: "Đánh giá", href: "#testimonials" },
   { label: "Đăng ký", href: "#newsletter" },
 ] as const;
+
+export const specGroups = [
+  {
+    category: "Màn hình",
+    items: [
+      { label: "Công nghệ", value: "AMOLED LTPO" },
+      { label: "Kích thước", value: '1.5" (466 × 466)' },
+      { label: "Độ sáng tối đa", value: "3000 nits" },
+      { label: "Kính bảo vệ", value: "Sapphire Crystal" },
+    ],
+  },
+  {
+    category: "Hiệu năng & Pin",
+    items: [
+      { label: "Chip xử lý", value: "Helix H1 dual-core" },
+      { label: "Bộ nhớ", value: "32GB + 2GB RAM" },
+      { label: "Dung lượng pin", value: "560 mAh" },
+      { label: "Thời lượng", value: "Tối đa 14 ngày" },
+    ],
+  },
+  {
+    category: "Sức khỏe & Cảm biến",
+    items: [
+      { label: "Nhịp tim", value: "BioSense Gen 4" },
+      { label: "Đo SpO2", value: "Có" },
+      { label: "Điện tâm đồ", value: "ECG chuẩn y tế" },
+      { label: "Cảm biến", value: "Gia tốc, con quay, la bàn" },
+    ],
+  },
+  {
+    category: "Kết nối & Bền bỉ",
+    items: [
+      { label: "Kết nối", value: "Bluetooth 5.3, Wi-Fi" },
+      { label: "Định vị", value: "GPS dual-band" },
+      { label: "Chống nước", value: "5ATM + IP68" },
+      { label: "Chất liệu", value: "Khung Titan Grade 5" },
+    ],
+  },
+] as const;
+
+export const testimonials = [
+  {
+    quote:
+      "Pin 14 ngày là thật. Mình chạy bộ mỗi sáng, đo nhịp tim cực chính xác mà cả tuần mới phải sạc một lần.",
+    name: "Minh Trí",
+    role: "Runner & Coach",
+  },
+  {
+    quote:
+      "Thiết kế titan nhẹ, đeo ngủ không hề khó chịu. Phần phân tích giấc ngủ chi tiết hơn hẳn chiếc đồng hồ cũ của mình.",
+    name: "Thu Hà",
+    role: "Yoga Instructor",
+  },
+  {
+    quote:
+      "Màn hình sáng 3000 nits nhìn rõ giữa trưa nắng. Kết nối điện thoại mượt, nhận thông báo tức thì.",
+    name: "Quốc Bảo",
+    role: "Product Designer",
+  },
+] as const;
