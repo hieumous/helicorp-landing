@@ -7,6 +7,7 @@ import {
   Feather,
 } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
+import { CountUp } from "@/components/motion/count-up";
 import { Card } from "@/components/ui/card";
 import { specGroups } from "@/lib/site";
 
@@ -18,9 +19,9 @@ const categoryIcons: Record<string, typeof Cpu> = {
 };
 
 const highlights = [
-  { icon: Gauge, value: "3000", unit: "nits", label: "Độ sáng màn hình" },
-  { icon: Feather, value: "32", unit: "g", label: "Trọng lượng khung titan" },
-  { icon: Cpu, value: "32", unit: "GB", label: "Bộ nhớ lưu trữ" },
+  { icon: Gauge, to: 3000, unit: "nits", label: "Độ sáng màn hình" },
+  { icon: Feather, to: 32, unit: "g", label: "Trọng lượng khung titan" },
+  { icon: Cpu, to: 32, unit: "GB", label: "Bộ nhớ lưu trữ" },
 ];
 
 export function Specs() {
@@ -47,7 +48,7 @@ export function Specs() {
               <Card className="flex flex-col items-center gap-2 border-border/60 p-6 text-center">
                 <h.icon className="size-7 text-primary" />
                 <p className="font-heading text-4xl font-bold tracking-tight">
-                  {h.value}
+                  <CountUp to={h.to} />
                   <span className="ml-1 text-xl text-muted-foreground">
                     {h.unit}
                   </span>

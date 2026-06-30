@@ -14,6 +14,7 @@ export const siteConfig = {
 
 export const navLinks = [
   { label: "Tính năng", href: "#features" },
+  { label: "Thiết kế", href: "#showcase" },
   { label: "Thông số", href: "#specs" },
   { label: "Đánh giá", href: "#testimonials" },
   { label: "Đăng ký", href: "#newsletter" },
@@ -76,5 +77,23 @@ export const testimonials = [
       "Màn hình sáng 3000 nits nhìn rõ giữa trưa nắng. Kết nối điện thoại mượt, nhận thông báo tức thì.",
     name: "Quốc Bảo",
     role: "Product Designer",
+  },
+  {
+    quote:
+      "GPS dual-band bắt vị trí cực nhanh và chính xác. Mình đạp xe đường dài mà bản đồ không hề lệch.",
+    name: "Đức Anh",
+    role: "Cyclist",
+  },
+  {
+    quote:
+      "Chống nước 5ATM nên mình đeo đi bơi thoải mái. Tự đếm sải tay và quãng bơi rất chuẩn.",
+    name: "Phương Linh",
+    role: "Swimmer",
+  },
+  {
+    quote:
+      "Đo ECG và SpO2 ngay trên cổ tay giúp mình theo dõi sức khỏe hằng ngày yên tâm hơn hẳn.",
+    name: "Bác sĩ Hoàng",
+    role: "Cardiologist",
   },
 ] as const;
