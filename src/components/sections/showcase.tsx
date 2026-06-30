@@ -9,12 +9,12 @@ const colorways = [
   {
     name: "Titan Đen",
     desc: "Bản thể thao mạnh mẽ với dây silicone cao cấp.",
-    src: "/images/helix-hero.png",
+    src: "/images/helix-hero.webp",
   },
   {
     name: "Vàng Champagne",
     desc: "Phong cách thanh lịch cho mọi sự kiện.",
-    src: "/images/helix-rose.png",
+    src: "/images/helix-rose.webp",
   },
 ];
 
@@ -49,10 +49,12 @@ export function Showcase() {
           >
             <motion.div style={{ scale: imageScale }} className="absolute inset-0">
               <Image
-                src="/images/helix-lifestyle.png"
+                src="/images/helix-lifestyle.webp"
                 alt="Người dùng đeo Helix One khi chạy bộ ngoài trời lúc bình minh"
                 fill
                 sizes="(max-width: 1280px) 100vw, 1216px"
+                loading="lazy"
+                quality={75}
                 className="object-cover"
               />
             </motion.div>
@@ -83,6 +85,8 @@ export function Showcase() {
                     alt={`Helix One phiên bản ${c.name}`}
                     fill
                     sizes="(max-width: 640px) 100vw, 600px"
+                    loading="lazy"
+                    quality={75}
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>

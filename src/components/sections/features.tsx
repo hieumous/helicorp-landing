@@ -29,42 +29,42 @@ const features: Feature[] = [
     title: "Theo dõi sức khỏe 24/7",
     desc: "Đo nhịp tim, SpO2, ECG và biến thiên nhịp tim liên tục với cảm biến BioSense thế hệ 4 — phát hiện bất thường ngay trên cổ tay.",
     stat: "BioSense Gen 4",
-    image: "/images/feature-health.png",
+    image: "/images/feature-health.webp",
     span: "feature",
   },
   {
     icon: BatteryCharging,
     title: "Pin 14 ngày",
     desc: "Sạc nhanh 10 phút dùng cả ngày. Chip tiết kiệm điện giúp pin bền bỉ suốt 2 tuần.",
-    image: "/images/feature-battery.png",
+    image: "/images/feature-battery.webp",
     span: "base",
   },
   {
     icon: MapPin,
     title: "Định vị GPS kép",
     desc: "Dual-band GPS định vị chính xác từng bước chạy, kể cả giữa thành phố nhiều nhà cao tầng.",
-    image: "/images/feature-gps.png",
+    image: "/images/feature-gps.webp",
     span: "base",
   },
   {
     icon: Waves,
     title: "Chống nước 5ATM",
     desc: "Thoải mái bơi lội đến độ sâu 50m. Tự động nhận diện kiểu bơi và đếm sải tay.",
-    image: "/images/feature-water.png",
+    image: "/images/feature-water.webp",
     span: "base",
   },
   {
     icon: Moon,
     title: "Phân tích giấc ngủ",
     desc: "Theo dõi các giai đoạn ngủ, điểm phục hồi và gợi ý cải thiện chất lượng giấc ngủ.",
-    image: "/images/feature-sleep.png",
+    image: "/images/feature-sleep.webp",
     span: "base",
   },
   {
     icon: Smartphone,
     title: "Kết nối liền mạch",
     desc: "Nhận thông báo, nghe gọi và điều khiển nhạc ngay trên cổ tay với kết nối Bluetooth 5.3.",
-    image: "/images/feature-connect.png",
+    image: "/images/feature-connect.webp",
     span: "wide",
   },
 ];
@@ -109,6 +109,8 @@ function FeatureTile({ f }: { f: Feature }) {
                 alt={f.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 66vw"
+                loading="lazy"
+                quality={75}
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
             )}
@@ -158,6 +160,8 @@ function FeatureTile({ f }: { f: Feature }) {
                 alt={f.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 33vw"
+                loading="lazy"
+                quality={75}
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
             )}
