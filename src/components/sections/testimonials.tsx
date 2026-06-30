@@ -13,7 +13,7 @@ function TestimonialCard({
   role: string;
 }) {
   return (
-    <Card className="mr-5 h-full w-[300px] shrink-0 border-border/60 sm:w-[360px]">
+    <Card className="mr-5 h-full w-[300px] shrink-0 border-border/60 sm:w-[340px] lg:w-[384px]">
       <CardContent className="flex h-full flex-col gap-4 p-6">
         <Quote className="size-8 text-primary/40" />
         <p className="flex-1 text-sm leading-relaxed text-foreground/90">
@@ -50,14 +50,14 @@ export function Testimonials() {
             Những trải nghiệm thực tế từ cộng đồng người dùng Helix One.
           </p>
         </Reveal>
-      </div>
 
-      {/* Marquee tự trượt ngang, tạm dừng khi hover */}
-      <div className="group relative mt-14 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-        <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
-          {[...testimonials, ...testimonials].map((t, i) => (
-            <TestimonialCard key={i} {...t} />
-          ))}
+        {/* Marquee: chỉ hiện ~3 thẻ trong khung, tự trượt ngang, dừng khi hover */}
+        <div className="group relative mt-14 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+          <div className="flex w-max animate-marquee group-hover:[animation-play-state:paused]">
+            {[...testimonials, ...testimonials].map((t, i) => (
+              <TestimonialCard key={i} {...t} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

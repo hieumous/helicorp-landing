@@ -7,6 +7,10 @@ export const siteConfig = {
   url: "https://helix-one.vercel.app",
   ogImage: "/og.png",
   email: "hello@helicorp.io",
+  phone: "+84 28 1234 5678",
+  address: "268 Lý Thường Kiệt, Phường 14, Quận 10, TP. Hồ Chí Minh",
+  mapEmbed:
+    "https://www.google.com/maps?q=268%20L%C3%BD%20Th%C6%B0%E1%BB%9Dng%20Ki%E1%BB%87t%2C%20Qu%E1%BA%ADn%2010%2C%20H%E1%BB%93%20Ch%C3%AD%20Minh&output=embed",
   links: {
     github: "https://github.com/",
   },
