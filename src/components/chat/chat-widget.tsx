@@ -1,24 +1,33 @@
 "use client";
 
 import * as React from "react";
-import { MessageCircle, X, Send, Loader2, Sparkles } from "lucide-react";
+import dynamic from "next/dynamic";
+import { X, Send, Loader2, Sparkles, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "@/hooks/use-translations";
+
+const ChatMessengerLottie = dynamic(
+  () =>
+    import("@/components/chat/chat-messenger-lottie").then((m) => m.ChatMessengerLottie),
+  {
+    ssr: false,
+    loading: () => <MessageCircle className="size-7 text-primary-foreground" />,
+  }
+);
 
 type Msg = { role: "user" | "model"; content: string };
 
-const GREETING: Msg = {
-  role: "model",
-  content: "Xin chào! Mình là trợ lý của Helix One. Bạn muốn biết gì về sản phẩm nào ạ?",
-};
-
-const SUGGESTIONS = ["Pin dùng được bao lâu?", "Có chống nước không?", "Đo được sức khỏe gì?"];
-
 export function ChatWidget() {
+  const { t, locale } = useTranslations();
   const [open, setOpen] = React.useState(false);
-  const [messages, setMessages] = React.useState<Msg[]>([GREETING]);
+  const [messages, setMessages] = React.useState<Msg[]>([]);
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    setMessages([{ role: "model", content: t.chat.greeting }]);
+  }, [locale, t.chat.greeting]);
 
   React.useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -40,13 +49,10 @@ export function ChatWidget() {
       const data = await res.json();
       setMessages((m) => [
         ...m,
-        { role: "model", content: data.reply ?? "Xin lỗi, mình chưa trả lời được lúc này." },
+        { role: "model", content: data.reply ?? t.chat.errorReply },
       ]);
     } catch {
-      setMessages((m) => [
-        ...m,
-        { role: "model", content: "Mất kết nối tới máy chủ. Bạn thử lại sau nhé." },
-      ]);
+      setMessages((m) => [...m, { role: "model", content: t.chat.errorNetwork }]);
     } finally {
       setLoading(false);
     }
@@ -54,17 +60,24 @@ export function ChatWidget() {
 
   return (
     <>
-      {/* Nút mở */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Đóng trợ lý" : "Mở trợ lý tư vấn"}
-        className="fixed bottom-5 right-5 z-50 flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30 transition-transform hover:scale-105 active:scale-95"
+        aria-label={open ? t.chat.close : t.chat.open}
+        className={cn(
+          "fixed bottom-5 right-5 z-50 flex items-center justify-center transition-transform hover:scale-105 active:scale-95",
+          open
+            ? "size-14 rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+            : "size-[4.75rem] rounded-full bg-primary/10 shadow-lg shadow-primary/30 ring-1 ring-primary/20"
+        )}
       >
-        {open ? <X className="size-6" /> : <MessageCircle className="size-6" />}
+        {open ? (
+          <X className="size-6" />
+        ) : (
+          <ChatMessengerLottie className="size-[4.75rem]" />
+        )}
       </button>
 
-      {/* Cửa sổ chat */}
       <div
         className={cn(
           "fixed bottom-24 right-5 z-50 flex w-[calc(100vw-2.5rem)] max-w-[380px] flex-col overflow-hidden rounded-2xl border border-border/60 bg-card shadow-2xl transition-all duration-300",
@@ -74,20 +87,18 @@ export function ChatWidget() {
         )}
         style={{ height: "min(70vh, 540px)" }}
         role="dialog"
-        aria-label="Trợ lý tư vấn Helix One"
+        aria-label={t.chat.title}
       >
-        {/* Header */}
         <div className="flex items-center gap-3 border-b border-border/60 bg-primary/5 px-4 py-3">
           <span className="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <Sparkles className="size-5" />
           </span>
           <div>
-            <p className="text-sm font-semibold">Trợ lý Helix One</p>
-            <p className="text-xs text-muted-foreground">Thường trả lời ngay</p>
+            <p className="text-sm font-semibold">{t.chat.title}</p>
+            <p className="text-xs text-muted-foreground">{t.chat.subtitle}</p>
           </div>
         </div>
 
-        {/* Tin nhắn */}
         <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-4">
           {messages.map((m, i) => (
             <div
@@ -110,15 +121,14 @@ export function ChatWidget() {
             <div className="flex justify-start">
               <div className="flex items-center gap-2 rounded-2xl rounded-bl-sm bg-muted px-3.5 py-2.5 text-sm text-muted-foreground">
                 <Loader2 className="size-4 animate-spin" />
-                Đang soạn trả lời...
+                {t.chat.typing}
               </div>
             </div>
           )}
 
-          {/* Gợi ý nhanh khi mới mở */}
           {messages.length === 1 && !loading && (
             <div className="flex flex-wrap gap-2 pt-1">
-              {SUGGESTIONS.map((s) => (
+              {t.chat.suggestions.map((s) => (
                 <button
                   key={s}
                   type="button"
@@ -132,7 +142,6 @@ export function ChatWidget() {
           )}
         </div>
 
-        {/* Ô nhập */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -143,13 +152,13 @@ export function ChatWidget() {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Nhập câu hỏi của bạn..."
+            placeholder={t.chat.placeholder}
             className="h-10 flex-1 rounded-full border border-border/60 bg-background px-4 text-sm outline-none focus:border-primary/50"
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            aria-label="Gửi"
+            aria-label={t.chat.send}
             className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
           >
             <Send className="size-4" />

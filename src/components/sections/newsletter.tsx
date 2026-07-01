@@ -9,10 +9,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Reveal } from "@/components/motion/reveal";
-import { subscribeSchema, type SubscribeInput } from "@/lib/validations";
+import { createSubscribeSchema, type SubscribeInput } from "@/lib/validations";
 import { siteConfig } from "@/lib/site";
+import { useTranslations } from "@/hooks/use-translations";
 
-function LazyMapEmbed() {
+function LazyMapEmbed({ mapTitle, mapLoading }: { mapTitle: string; mapLoading: string }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [show, setShow] = React.useState(false);
 
@@ -36,7 +37,7 @@ function LazyMapEmbed() {
     <div ref={ref} className="absolute inset-0">
       {show ? (
         <iframe
-          title={`Bản đồ ${siteConfig.brand}`}
+          title={`${mapTitle} ${siteConfig.brand}`}
           src={siteConfig.mapEmbed}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
@@ -46,7 +47,7 @@ function LazyMapEmbed() {
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-muted text-sm text-muted-foreground">
           <MapPin className="mr-2 size-4" />
-          Đang tải bản đồ...
+          {mapLoading}
         </div>
       )}
     </div>
@@ -54,7 +55,17 @@ function LazyMapEmbed() {
 }
 
 export function Newsletter() {
+  const { t } = useTranslations();
   const [done, setDone] = React.useState(false);
+
+  const schema = React.useMemo(
+    () =>
+      createSubscribeSchema({
+        nameMin: t.newsletter.validation.nameMin,
+        emailInvalid: t.newsletter.validation.emailInvalid,
+      }),
+    [t]
+  );
 
   const {
     register,
@@ -62,7 +73,7 @@ export function Newsletter() {
     reset,
     formState: { errors, isSubmitting },
   } = useForm<SubscribeInput>({
-    resolver: zodResolver(subscribeSchema),
+    resolver: zodResolver(schema),
     defaultValues: { name: "", email: "", website: "" },
   });
 
@@ -76,7 +87,7 @@ export function Newsletter() {
       const data = await res.json();
 
       if (!res.ok || !data.ok) {
-        toast.error(data.message ?? "Có lỗi xảy ra, vui lòng thử lại.");
+        toast.error(data.message ?? t.newsletter.errorGeneric);
         return;
       }
 
@@ -84,7 +95,7 @@ export function Newsletter() {
       setDone(true);
       reset();
     } catch {
-      toast.error("Không thể kết nối máy chủ. Vui lòng thử lại sau.");
+      toast.error(t.newsletter.errorNetwork);
     }
   };
 
@@ -95,19 +106,21 @@ export function Newsletter() {
           <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card shadow-sm">
             <div className="absolute -right-16 -top-16 -z-10 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
             <div className="grid lg:grid-cols-2">
-              {/* Cột trái: Google Map + thông tin liên hệ */}
               <div className="flex flex-col border-b border-border/60 lg:border-b-0 lg:border-r">
                 <div className="relative h-64 w-full overflow-hidden bg-muted lg:h-full lg:min-h-[28rem]">
-                  <LazyMapEmbed />
+                  <LazyMapEmbed
+                    mapTitle={t.newsletter.mapTitle}
+                    mapLoading={t.newsletter.mapLoading}
+                  />
                 </div>
                 <div className="grid gap-4 p-6 sm:p-8">
                   <div className="flex items-start gap-3">
                     <MapPin className="mt-0.5 size-5 shrink-0 text-primary" />
                     <div>
-                      <p className="text-sm font-semibold">Trụ sở {siteConfig.brand}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {siteConfig.address}
+                      <p className="text-sm font-semibold">
+                        {t.newsletter.hq} {siteConfig.brand}
                       </p>
+                      <p className="text-sm text-muted-foreground">{siteConfig.address}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -131,31 +144,21 @@ export function Newsletter() {
                 </div>
               </div>
 
-              {/* Cột phải: form đăng ký */}
               <div className="p-8 sm:p-10 lg:p-12">
                 <h2 className="font-heading text-2xl font-bold tracking-tight sm:text-3xl">
-                  Đặt trước Helix One
+                  {t.newsletter.title}
                 </h2>
-                <p className="mt-3 text-muted-foreground">
-                  Để lại email để nhận ưu đãi đặt trước sớm và cập nhật ngày lên
-                  kệ chính thức.
-                </p>
+                <p className="mt-3 text-muted-foreground">{t.newsletter.desc}</p>
 
                 {done ? (
                   <div className="mt-8 flex flex-col items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-8 text-center">
                     <CheckCircle2 className="size-12 text-primary" />
                     <p className="font-heading text-lg font-semibold">
-                      Đăng ký thành công!
+                      {t.newsletter.successTitle}
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      Cảm ơn bạn. Chúng tôi sẽ gửi thông tin sớm nhất qua email.
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="mt-2"
-                      onClick={() => setDone(false)}
-                    >
-                      Đăng ký email khác
+                    <p className="text-sm text-muted-foreground">{t.newsletter.successDesc}</p>
+                    <Button variant="outline" className="mt-2" onClick={() => setDone(false)}>
+                      {t.newsletter.anotherEmail}
                     </Button>
                   </div>
                 ) : (
@@ -165,37 +168,32 @@ export function Newsletter() {
                     className="mt-8 grid gap-4"
                   >
                     <div className="grid gap-2 text-left">
-                      <Label htmlFor="name">Họ và tên</Label>
+                      <Label htmlFor="name">{t.newsletter.nameLabel}</Label>
                       <Input
                         id="name"
-                        placeholder="Nguyễn Văn A"
+                        placeholder={t.newsletter.namePlaceholder}
                         aria-invalid={!!errors.name}
                         {...register("name")}
                       />
                       {errors.name && (
-                        <p className="text-sm text-destructive">
-                          {errors.name.message}
-                        </p>
+                        <p className="text-sm text-destructive">{errors.name.message}</p>
                       )}
                     </div>
 
                     <div className="grid gap-2 text-left">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">{t.newsletter.emailLabel}</Label>
                       <Input
                         id="email"
                         type="email"
-                        placeholder="ban@email.com"
+                        placeholder={t.newsletter.emailPlaceholder}
                         aria-invalid={!!errors.email}
                         {...register("email")}
                       />
                       {errors.email && (
-                        <p className="text-sm text-destructive">
-                          {errors.email.message}
-                        </p>
+                        <p className="text-sm text-destructive">{errors.email.message}</p>
                       )}
                     </div>
 
-                    {/* Honeypot ẩn với người dùng, bot sẽ điền => bị loại */}
                     <div className="absolute left-[-9999px]" aria-hidden="true">
                       <label htmlFor="website">Website</label>
                       <input
@@ -207,27 +205,22 @@ export function Newsletter() {
                       />
                     </div>
 
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="h-11 w-full text-base"
-                    >
+                    <Button type="submit" disabled={isSubmitting} className="h-11 w-full text-base">
                       {isSubmitting ? (
                         <>
                           <Loader2 className="animate-spin" />
-                          Đang gửi...
+                          {t.newsletter.submitting}
                         </>
                       ) : (
                         <>
                           <Send />
-                          Đăng ký nhận tin
+                          {t.newsletter.submit}
                         </>
                       )}
                     </Button>
 
                     <p className="text-center text-xs text-muted-foreground">
-                      Chúng tôi tôn trọng quyền riêng tư của bạn. Hủy đăng ký bất
-                      cứ lúc nào.
+                      {t.newsletter.privacy}
                     </p>
                   </form>
                 )}

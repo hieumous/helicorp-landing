@@ -208,3 +208,416 @@
     );
   background-size: 56px 56px;
 }
+
+.fan-layout {
+  position: relative;
+  width: 100%;
+  height: 22rem;
+  perspective: 1200px;
+}
+
+@media (min-width: 480px) {
+  .fan-layout {
+    height: 26rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .fan-layout {
+    height: 28rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fan-layout {
+    height: 34rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .fan-layout {
+    height: 38rem;
+  }
+}
+
+.fan-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7rem;
+  height: 12.25rem;
+  margin-left: -3.5rem;
+  margin-top: -6.125rem;
+  overflow: hidden;
+  border-radius: 1rem;
+  transform-origin: center center;
+  will-change: transform;
+  border: 1.5px solid rgb(255 255 255 / 0.12);
+  box-shadow:
+    0 8px 32px rgb(0 0 0 / 0.28),
+    0 2px 8px rgb(0 0 0 / 0.15);
+}
+
+@media (min-width: 480px) {
+  .fan-card {
+    width: 8.5rem;
+    height: 14.875rem;
+    margin-left: -4.25rem;
+    margin-top: -7.4375rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .fan-card {
+    width: 10rem;
+    height: 17.5rem;
+    margin-left: -5rem;
+    margin-top: -8.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .fan-card {
+    width: 11rem;
+    height: 19.25rem;
+    margin-left: -5.5rem;
+    margin-top: -9.625rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fan-card {
+    width: 10.5rem;
+    height: 18.375rem;
+    margin-left: -5.25rem;
+    margin-top: -9.1875rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .fan-card {
+    width: 12rem;
+    height: 21rem;
+    margin-left: -6rem;
+    margin-top: -10.5rem;
+  }
+}
+
+/* Fan carousel nhúng trong feature card */
+.fan-layout--embedded {
+  height: 12rem;
+}
+
+@media (min-width: 480px) {
+  .fan-layout--embedded {
+    height: 13rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .fan-layout--embedded {
+    height: 14rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fan-layout--embedded {
+    height: 15rem;
+  }
+}
+
+.fan-layout--embedded .fan-card {
+  width: 5rem;
+  height: 8.75rem;
+  margin-left: -2.5rem;
+  margin-top: -4.375rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid rgb(0 0 0 / 0.08);
+  box-shadow:
+    0 4px 16px rgb(0 0 0 / 0.1),
+    0 1px 4px rgb(0 0 0 / 0.06);
+}
+
+@media (min-width: 480px) {
+  .fan-layout--embedded .fan-card {
+    width: 5.5rem;
+    height: 9.625rem;
+    margin-left: -2.75rem;
+    margin-top: -4.8125rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .fan-layout--embedded .fan-card {
+    width: 6rem;
+    height: 10.5rem;
+    margin-left: -3rem;
+    margin-top: -5.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .fan-layout--embedded .fan-card {
+    width: 6.5rem;
+    height: 11.375rem;
+    margin-left: -3.25rem;
+    margin-top: -5.6875rem;
+  }
+}
+
+/* Connect row — mặc định thấp; fan hover mới nổi lên */
+.connect-feature-card {
+  position: relative;
+  z-index: 10;
+  isolation: isolate;
+}
+
+.connect-feature-card:has(.smooth-fan-section[data-fan-hover="true"]) {
+  z-index: 500;
+}
+
+.smooth-fan-section[data-fan-hover="true"] {
+  z-index: 600;
+}
+
+/* FlipCard hover — nâng cả ô grid lên trên hàng vòng xoay */
+.flip-feature-reveal {
+  position: relative;
+  z-index: 1;
+}
+
+.features-flip-grid:has(.flip-card:hover) .flip-feature-reveal:has(.flip-card:hover) {
+  z-index: 60;
+}
+
+.features-flip-grid:has(.flip-card:hover):not(:has([data-fan-hover="true"]))
+  .connect-feature-card {
+  z-index: 5;
+}
+
+/* FlipCard hover pop — nổi trên các thẻ khác, làm mờ thẻ còn lại */
+.features-flip-grid:has(.flip-card:hover) .flip-card:not(:hover) {
+  opacity: 0.28;
+  transition: opacity 0.35s ease;
+}
+
+.features-flip-grid .flip-card {
+  transition:
+    transform 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98),
+    box-shadow 0.5s cubic-bezier(0.21, 0.47, 0.32, 0.98),
+    opacity 0.35s ease;
+}
+
+/* Smooth spin carousel — hover phóng to ảnh trong khung */
+.fan-layout--smooth {
+  overflow: visible;
+}
+
+.fan-card--smooth .fan-card-img {
+  transition: transform 0.45s cubic-bezier(0.21, 0.47, 0.32, 0.98);
+  will-change: transform;
+}
+
+.fan-card--smooth[data-hovered="true"] {
+  box-shadow:
+    0 24px 48px rgb(0 0 0 / 0.22),
+    0 8px 20px rgb(0 0 0 / 0.12);
+}
+
+.fan-card--smooth[data-hovered="true"] .fan-card-img {
+  transform: none;
+}
+
+/* Specs stack — hover để lăn chuột trong vùng thẻ */
+.specs-stack-zone {
+  cursor: default;
+}
+
+.specs-stack-thumb {
+  touch-action: none;
+  transition: top 0.15s ease, height 0.15s ease, box-shadow 0.15s ease;
+}
+
+.specs-stack-thumb--dragging {
+  transition: none;
+  box-shadow: 0 2px 12px oklch(0 0 0 / 0.22);
+  scale: 1.08;
+}
+
+.specs-stack-card-layer {
+  transform-origin: top center;
+}
+
+.specs-stack-behind-blur {
+  z-index: 2;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--card) 72%, transparent) 0%,
+    color-mix(in oklch, var(--card) 30%, transparent) 55%,
+    transparent 100%
+  );
+  transition: opacity 0.12s ease;
+}
+
+.dark .specs-stack-behind-blur {
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  backdrop-filter: blur(14px) saturate(1.05);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--card) 92%, transparent) 0%,
+    color-mix(in oklch, var(--background) 72%, transparent) 55%,
+    transparent 100%
+  );
+}
+
+/* Specs highlight cards */
+.specs-highlight-card {
+  transform: translateY(0);
+  transition:
+    transform 0.45s cubic-bezier(0.21, 0.47, 0.32, 0.98),
+    box-shadow 0.45s ease,
+    border-color 0.45s ease;
+}
+
+.specs-highlight-card:hover {
+  transform: translateY(-6px);
+  border-color: oklch(0.546 0.231 277.02 / 0.35);
+  box-shadow:
+    0 16px 40px oklch(0.546 0.231 277.02 / 0.12),
+    0 0 0 1px oklch(0.546 0.231 277.02 / 0.08);
+}
+
+.specs-highlight-card__glow {
+  background: radial-gradient(
+    circle at 50% 0%,
+    oklch(0.546 0.231 277.02 / 0.16),
+    transparent 65%
+  );
+}
+
+.specs-highlight-card__mesh {
+  animation: specs-mesh-drift 6s ease-in-out infinite;
+}
+
+.specs-highlight-card__bar-fill {
+  width: 0;
+  transition: width 1.4s cubic-bezier(0.21, 0.47, 0.32, 0.98);
+}
+
+.specs-highlight-card__bar-fill--active {
+  width: 100%;
+}
+
+.specs-highlight-card--gauge .specs-highlight-card__bar-fill--active {
+  width: 92%;
+}
+
+.specs-highlight-card--feather .specs-highlight-card__bar-fill--active {
+  width: 38%;
+}
+
+.specs-highlight-card--chip .specs-highlight-card__bar-fill--active {
+  width: 72%;
+}
+
+.specs-highlight-card__icon--gauge {
+  animation: specs-gauge-pulse 2.4s ease-in-out infinite;
+}
+
+.specs-highlight-card__icon--feather {
+  animation: specs-feather-float 3s ease-in-out infinite;
+}
+
+.specs-highlight-card__icon--chip {
+  animation: specs-chip-pulse 2.8s ease-in-out infinite;
+}
+
+.specs-highlight-card--gauge:hover .specs-highlight-card__mesh {
+  background: oklch(0.546 0.231 277.02 / 0.2);
+}
+
+.specs-highlight-card--feather:hover {
+  animation: specs-feather-card-bob 0.8s ease-in-out infinite;
+}
+
+@keyframes specs-mesh-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-8px, 10px) scale(1.08);
+  }
+}
+
+@keyframes specs-gauge-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 oklch(0.546 0.231 277.02 / 0);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 20px oklch(0.546 0.231 277.02 / 0.35);
+  }
+}
+
+@keyframes specs-feather-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(4deg);
+  }
+}
+
+@keyframes specs-chip-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.04);
+    filter: brightness(1.15);
+  }
+}
+
+@keyframes specs-feather-card-bob {
+  0%,
+  100% {
+    transform: translateY(-6px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .specs-highlight-card,
+  .specs-highlight-card:hover,
+  .specs-highlight-card--feather:hover {
+    animation: none;
+    transform: none;
+  }
+
+  .specs-highlight-card__mesh,
+  .specs-highlight-card__icon--gauge,
+  .specs-highlight-card__icon--feather,
+  .specs-highlight-card__icon--chip {
+    animation: none;
+  }
+
+  .specs-highlight-card__bar-fill--active {
+    width: 100%;
+    transition: none;
+  }
+}
+
+/* Messenger Lottie */
+.chat-messenger-lottie canvas {
+  background: transparent !important;
+}

@@ -1,7 +1,13 @@
+"use client";
+
 import { Watch } from "lucide-react";
-import { navLinks, siteConfig } from "@/lib/site";
+import { navHrefs } from "@/lib/i18n/translations";
+import { siteConfig } from "@/lib/site";
+import { useTranslations } from "@/hooks/use-translations";
 
 export function Footer() {
+  const { t } = useTranslations();
+
   return (
     <footer className="border-t border-border/60 py-12">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 sm:px-6 md:flex-row lg:px-8">
@@ -13,19 +19,19 @@ export function Footer() {
         </div>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          {navLinks.map((link) => (
+          {navHrefs.map((link) => (
             <a
               key={link.href}
               href={link.href}
               className="text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              {link.label}
+              {t.nav[link.key]}
             </a>
           ))}
         </nav>
 
         <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} {siteConfig.brand}. All rights reserved.
+          © {new Date().getFullYear()} {siteConfig.brand}. {t.footer.rights}
         </p>
       </div>
     </footer>

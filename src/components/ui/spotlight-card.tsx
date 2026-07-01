@@ -25,7 +25,7 @@ export function SpotlightCard({
       ref={ref}
       onMouseMove={handleMove}
       className={cn(
-        "group relative h-full overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5",
+        "group relative overflow-hidden rounded-2xl border border-border/60 bg-card transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5",
         className
       )}
     >
@@ -52,7 +52,7 @@ export function SpotlightCard({
             "radial-gradient(420px circle at var(--x) var(--y), color-mix(in oklch, var(--primary) 14%, transparent), transparent 60%)",
         }}
       />
-      <div className="relative h-full">{children}</div>
+      <div className="relative">{children}</div>
     </div>
   );
 }
