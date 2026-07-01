@@ -6,7 +6,12 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 31536000,
   },
   experimental: {
-    optimizePackageImports: ["lucide-react"],
+    optimizePackageImports: [
+      "lucide-react",
+      "gsap",
+      "@lottiefiles/dotlottie-react",
+      "sonner",
+    ],
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",

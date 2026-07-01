@@ -1,26 +1,54 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { ArrowRight, Star } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { HeroStackCard } from "@/components/ui/stack-card";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
-import { HeroShopCta } from "@/components/shop/hero-shop-cta";
 import { useTranslations } from "@/hooks/use-translations";
+
+const HeroStackCard = dynamic(
+  () => import("@/components/ui/stack-card").then((m) => m.HeroStackCard),
+  { ssr: false }
+);
+
+const HeroShopCta = dynamic(
+  () => import("@/components/shop/hero-shop-cta").then((m) => m.HeroShopCta),
+  { ssr: false, loading: () => <div className="mt-6 h-10" aria-hidden /> }
+);
 
 export function Hero() {
   const { t } = useTranslations();
+  const lcpAlt =
+    "Đồng hồ thông minh Helix One màn hình AMOLED hiển thị nhịp tim và số bước chân";
 
   return (
     <section className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-28">
       <div className="absolute inset-0 -z-10 bg-grid [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]" />
-      <div className="absolute left-1/2 top-24 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-primary/25 blur-[120px]" />
+      <div className="absolute left-1/2 top-24 -z-10 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-primary/25 blur-[120px] max-lg:h-[280px] max-lg:w-[280px] max-lg:blur-[80px]" />
 
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8">
-        <div className="relative order-1 mx-auto flex w-full justify-center overflow-visible lg:order-2">
-          <div className="absolute inset-0 -z-10 scale-90 rounded-full bg-primary/20 blur-3xl" />
-          <HeroStackCard />
+        <div className="relative order-1 mx-auto w-full max-w-[560px] lg:order-2">
+          <div className="absolute inset-0 -z-10 scale-90 rounded-full bg-primary/20 blur-3xl max-lg:hidden" />
+
+          {/* Mobile LCP — single lightweight image, no stack JS */}
+          <div className="overflow-hidden rounded-3xl border border-white/10 shadow-2xl ring-1 ring-black/5 lg:hidden">
+            {/* Plain img — tránh /_next/image để cải thiện LCP mobile */}
+            <img
+              src="/images/helix-hero-mobile.webp"
+              alt={lcpAlt}
+              width={640}
+              height={427}
+              fetchPriority="high"
+              decoding="async"
+              className="h-auto w-full object-cover"
+            />
+          </div>
+
+          <div className="hidden lg:block">
+            <HeroStackCard />
+          </div>
         </div>
 
         <div className="order-2 text-center lg:order-1 lg:text-left">

@@ -12,14 +12,16 @@ const inter = Inter({
   weight: ["400", "600"],
   display: "swap",
   preload: true,
+  adjustFontFallback: true,
 });
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-heading",
   subsets: ["latin", "vietnamese"],
-  weight: ["600", "700"],
+  weight: ["700"],
   display: "swap",
-  preload: true,
+  preload: false,
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
@@ -79,10 +81,19 @@ export default function RootLayout({
       <head>
         <link
           rel="preload"
+          href="/images/helix-hero-mobile.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+          media="(max-width: 1023px)"
+        />
+        <link
+          rel="preload"
           href="/images/helix-hero.webp"
           as="image"
           type="image/webp"
           fetchPriority="high"
+          media="(min-width: 1024px)"
         />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">

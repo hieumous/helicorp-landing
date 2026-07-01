@@ -2,6 +2,7 @@
 
 import { Reveal } from "@/components/motion/reveal";
 import { ProductCard } from "@/components/shop/product-actions";
+import { LazyBannerVideo } from "@/components/ui/lazy-banner-video";
 import { getLocalizedProducts } from "@/lib/products";
 import { useTranslations } from "@/hooks/use-translations";
 
@@ -26,17 +27,10 @@ export function Showcase() {
             role="img"
             aria-label={t.showcase.lifestyleAlt}
           >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
+            <LazyBannerVideo
+              src="/videos/helix-banner.mp4"
               poster="/images/helix-lifestyle.webp"
-              className="absolute inset-0 h-full w-full object-cover"
-            >
-              <source src="/videos/helix-banner.mp4" type="video/mp4" />
-            </video>
+            />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             <div className="absolute bottom-0 left-0 p-6 sm:p-10">
               <p className="max-w-md font-heading text-2xl font-bold text-white sm:text-3xl">

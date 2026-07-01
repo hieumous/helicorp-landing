@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
   HeartPulse,
@@ -14,9 +15,14 @@ import {
 import { Reveal } from "@/components/motion/reveal";
 import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { FlipCard } from "@/components/ui/flip-card";
-import { ConnectFanCards } from "@/components/sections/connect-fan-cards";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/hooks/use-translations";
+
+const ConnectFanCards = dynamic(
+  () =>
+    import("@/components/sections/connect-fan-cards").then((m) => m.ConnectFanCards),
+  { ssr: false, loading: () => <div className="min-h-[15rem] w-full" aria-hidden /> }
+);
 
 const featureIcons: LucideIcon[] = [
   HeartPulse,

@@ -68,6 +68,7 @@ export function SmoothFanCarousel({ cards, className }: SmoothFanCarouselProps) 
   const offsetRef = useRef(0);
   const hoveredRef = useRef<number | null>(null);
   const readyRef = useRef(false);
+  const visibleRef = useRef(true);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
@@ -195,6 +196,7 @@ export function SmoothFanCarousel({ cards, className }: SmoothFanCarouselProps) 
     });
 
     const tick = () => {
+      if (!visibleRef.current) return;
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if (readyRef.current && hoveredRef.current === null && !reduced) {
         offsetRef.current += (SPIN_SPEED / 60) * gsap.ticker.deltaRatio();
@@ -205,6 +207,18 @@ export function SmoothFanCarousel({ cards, className }: SmoothFanCarouselProps) 
     };
 
     gsap.ticker.add(tick);
+
+    const sectionEl = sectionRef.current;
+    let visibilityObs: IntersectionObserver | undefined;
+    if (sectionEl) {
+      visibilityObs = new IntersectionObserver(
+        ([entry]) => {
+          visibleRef.current = entry.isIntersecting;
+        },
+        { rootMargin: "100px" }
+      );
+      visibilityObs.observe(sectionEl);
+    }
 
     const cleanups: (() => void)[] = [];
     cardRefs.current.forEach((el, i) => {
@@ -236,6 +250,7 @@ export function SmoothFanCarousel({ cards, className }: SmoothFanCarouselProps) 
 
     return () => {
       gsap.ticker.remove(tick);
+      visibilityObs?.disconnect();
       cleanups.forEach((fn) => fn());
       window.removeEventListener("resize", onResize);
     };
