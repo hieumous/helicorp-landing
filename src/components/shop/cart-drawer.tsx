@@ -6,14 +6,10 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/products";
 import { useShopStore } from "@/store/shop-store";
-
-const tabs = [
-  { id: "cart" as const, label: "Giỏ hàng", icon: ShoppingBag },
-  { id: "wishlist" as const, label: "Yêu thích", icon: Heart },
-  { id: "viewed" as const, label: "Đã xem", icon: Clock },
-];
+import { useTranslations } from "@/hooks/use-translations";
 
 export function CartDrawer() {
+  const { t, locale } = useTranslations();
   const open = useShopStore((s) => s.drawerOpen);
   const tab = useShopStore((s) => s.drawerTab);
   const closeDrawer = useShopStore((s) => s.closeDrawer);
@@ -26,43 +22,49 @@ export function CartDrawer() {
   const addToCart = useShopStore((s) => s.addToCart);
   const cartTotal = useShopStore((s) => s.cartTotal);
 
+  const tabs = [
+    { id: "cart" as const, label: t.shop.cart, icon: ShoppingBag },
+    { id: "wishlist" as const, label: t.shop.wishlist, icon: Heart },
+    { id: "viewed" as const, label: t.shop.viewed, icon: Clock },
+  ];
+
   if (!open) return null;
 
   return (
     <>
       <button
         type="button"
-        aria-label="Đóng panel mua sắm"
+        aria-label={t.shop.closePanel}
         className="fixed inset-0 z-[70] bg-black/50 backdrop-blur-sm"
         onClick={closeDrawer}
       />
       <aside
         role="dialog"
-        aria-label="Mini shop Helix One"
+        aria-label={t.shop.miniShop}
         className="fixed inset-y-0 right-0 z-[71] flex w-full max-w-md flex-col border-l border-border/60 bg-background shadow-2xl"
       >
         <div className="flex items-center justify-between border-b border-border/60 px-5 py-4">
-          <h2 className="font-heading text-lg font-semibold">Cửa hàng mini</h2>
-          <Button variant="ghost" size="icon" onClick={closeDrawer} aria-label="Đóng">
+          <h2 className="font-heading text-lg font-semibold">{t.shop.miniShop}</h2>
+          <Button variant="ghost" size="icon" onClick={closeDrawer} aria-label={t.shop.close}>
             <X className="size-5" />
           </Button>
         </div>
 
         <div className="flex border-b border-border/60">
-          {tabs.map((t) => (
+          {tabs.map((item) => (
             <button
-              key={t.id}
+              key={item.id}
               type="button"
-              onClick={() => setDrawerTab(t.id)}
+              onClick={() => setDrawerTab(item.id)}
               className={cn(
                 "flex flex-1 items-center justify-center gap-1.5 py-3 text-sm font-medium transition-colors",
-                tab === t.id
+                tab === item.id
                   ? "border-b-2 border-primary text-primary"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <t.icon className="size-4" />
-              {t.label}
+              <item.icon className="size-4" />
+              {item.label}
             </button>
           ))}
         </div>
@@ -72,7 +74,7 @@ export function CartDrawer() {
             <>
               {cart.length === 0 ? (
                 <p className="py-12 text-center text-sm text-muted-foreground">
-                  Giỏ hàng trống. Hãy thêm Helix One từ mục Thiết kế.
+                  {t.shop.cartEmpty}
                 </p>
               ) : (
                 <ul className="space-y-4">
@@ -92,7 +94,9 @@ export function CartDrawer() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-sm font-semibold">{item.variant}</p>
-                        <p className="text-xs text-muted-foreground">{formatPrice(item.price)}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatPrice(item.price, locale)}
+                        </p>
                         <div className="mt-2 flex items-center gap-2">
                           <Button
                             variant="outline"
@@ -132,7 +136,7 @@ export function CartDrawer() {
             <>
               {wishlist.length === 0 ? (
                 <p className="py-12 text-center text-sm text-muted-foreground">
-                  Chưa có sản phẩm yêu thích.
+                  {t.shop.wishlistEmpty}
                 </p>
               ) : (
                 <ul className="space-y-3">
@@ -146,10 +150,10 @@ export function CartDrawer() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-semibold">{p.variant}</p>
-                        <p className="text-xs text-primary">{formatPrice(p.price)}</p>
+                        <p className="text-xs text-primary">{formatPrice(p.price, locale)}</p>
                       </div>
                       <Button size="sm" variant="outline" onClick={() => addToCart(p)}>
-                        Thêm
+                        {t.shop.add}
                       </Button>
                     </li>
                   ))}
@@ -162,7 +166,7 @@ export function CartDrawer() {
             <>
               {recentlyViewed.length === 0 ? (
                 <p className="py-12 text-center text-sm text-muted-foreground">
-                  Bạn chưa xem sản phẩm nào.
+                  {t.shop.viewedEmpty}
                 </p>
               ) : (
                 <ul className="space-y-3">
@@ -176,7 +180,9 @@ export function CartDrawer() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-semibold">{p.variant}</p>
-                        <p className="text-xs text-muted-foreground">{formatPrice(p.price)}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {formatPrice(p.price, locale)}
+                        </p>
                       </div>
                     </li>
                   ))}
@@ -189,8 +195,8 @@ export function CartDrawer() {
         {tab === "cart" && cart.length > 0 && (
           <div className="border-t border-border/60 p-5">
             <div className="mb-4 flex justify-between text-sm">
-              <span className="text-muted-foreground">Tổng tạm tính</span>
-              <span className="font-semibold">{formatPrice(cartTotal())}</span>
+              <span className="text-muted-foreground">{t.shop.subtotal}</span>
+              <span className="font-semibold">{formatPrice(cartTotal(), locale)}</span>
             </div>
             <a
               href="#newsletter"
@@ -198,7 +204,7 @@ export function CartDrawer() {
               className={cn(buttonVariants(), "w-full")}
               data-track="checkout_cta"
             >
-              Tiếp tục đặt trước
+              {t.shop.continuePreorder}
             </a>
           </div>
         )}

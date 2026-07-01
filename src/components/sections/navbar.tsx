@@ -4,11 +4,15 @@ import * as React from "react";
 import { Menu, X, Watch } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageToggle } from "@/components/language-toggle";
 import { ShopToolbar } from "@/components/shop/shop-toolbar";
 import { cn } from "@/lib/utils";
-import { navLinks, siteConfig } from "@/lib/site";
+import { navHrefs } from "@/lib/i18n/translations";
+import { siteConfig } from "@/lib/site";
+import { useTranslations } from "@/hooks/use-translations";
 
 export function Navbar() {
+  const { t } = useTranslations();
   const [scrolled, setScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -40,13 +44,13 @@ export function Navbar() {
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
-          {navLinks.map((link) => (
+          {navHrefs.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
                 className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                {link.label}
+                {t.nav[link.key]}
               </a>
             </li>
           ))}
@@ -54,19 +58,20 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ShopToolbar className="hidden sm:flex" />
+          <LanguageToggle />
           <ThemeToggle />
           <a
             href="#newsletter"
             className={cn(buttonVariants(), "hidden md:inline-flex")}
             data-track="navbar_preorder"
           >
-            Đặt trước
+            {t.nav.preorder}
           </a>
           <Button
             variant="ghost"
             size="icon"
             className="md:hidden"
-            aria-label="Mở menu"
+            aria-label={t.nav.openMenu}
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -77,18 +82,18 @@ export function Navbar() {
       {open && (
         <div className="border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden">
           <ul className="space-y-1 px-4 py-4">
-            {navLinks.map((link) => (
+            {navHrefs.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className="block rounded-md px-3 py-2 text-base font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                 >
-                  {link.label}
+                  {t.nav[link.key]}
                 </a>
               </li>
             ))}
-            <li className="pt-2 flex gap-2 sm:hidden">
+            <li className="flex gap-2 pt-2 sm:hidden">
               <ShopToolbar />
             </li>
             <li className="pt-2">
@@ -98,7 +103,7 @@ export function Navbar() {
                 className={cn(buttonVariants(), "w-full")}
                 data-track="mobile_preorder"
               >
-                Đặt trước
+                {t.nav.preorder}
               </a>
             </li>
           </ul>

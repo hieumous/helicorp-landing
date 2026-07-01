@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LazyToaster } from "@/components/lazy-toaster";
+import { LocaleSync } from "@/components/locale-sync";
 import { siteConfig } from "@/lib/site";
 
 const inter = Inter({
@@ -91,6 +92,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <LocaleSync />
           {children}
           <LazyToaster richColors position="top-center" />
         </ThemeProvider>

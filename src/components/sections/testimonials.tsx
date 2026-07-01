@@ -1,7 +1,9 @@
+"use client";
+
 import { Star, Quote } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 import { Card, CardContent } from "@/components/ui/card";
-import { testimonials } from "@/lib/site";
+import { useTranslations } from "@/hooks/use-translations";
 
 function TestimonialCard({
   quote,
@@ -34,6 +36,8 @@ function TestimonialCard({
 }
 
 export function Testimonials() {
+  const { t } = useTranslations();
+
   return (
     <section id="testimonials" className="scroll-mt-20 overflow-hidden py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -44,18 +48,15 @@ export function Testimonials() {
             ))}
           </div>
           <h2 className="mt-4 font-heading text-3xl font-bold tracking-tight sm:text-4xl">
-            Được hơn 50.000 người tin dùng
+            {t.testimonials.title}
           </h2>
-          <p className="mt-4 text-muted-foreground">
-            Những trải nghiệm thực tế từ cộng đồng người dùng Helix One.
-          </p>
+          <p className="mt-4 text-muted-foreground">{t.testimonials.desc}</p>
         </Reveal>
 
-        {/* Marquee: chỉ hiện ~3 thẻ trong khung, tự trượt ngang, dừng khi hover */}
         <div className="group relative mt-14 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
           <div className="flex w-max animate-marquee">
-            {[...testimonials, ...testimonials].map((t, i) => (
-              <TestimonialCard key={i} {...t} />
+            {[...t.testimonials.items, ...t.testimonials.items].map((item, i) => (
+              <TestimonialCard key={i} {...item} />
             ))}
           </div>
         </div>

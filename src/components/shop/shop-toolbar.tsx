@@ -5,6 +5,7 @@ import { Heart, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useShopStore } from "@/store/shop-store";
+import { useTranslations } from "@/hooks/use-translations";
 
 function Badge({ count }: { count: number }) {
   if (count <= 0) return null;
@@ -16,6 +17,7 @@ function Badge({ count }: { count: number }) {
 }
 
 export function ShopToolbar({ className }: { className?: string }) {
+  const { t } = useTranslations();
   const [mounted, setMounted] = React.useState(false);
   const openDrawer = useShopStore((s) => s.openDrawer);
   const cartCount = useShopStore((s) => s.cartCount());
@@ -28,7 +30,7 @@ export function ShopToolbar({ className }: { className?: string }) {
       <Button
         variant="ghost"
         size="icon"
-        aria-label="Yêu thích"
+        aria-label={t.shop.wishlist}
         className="relative"
         onClick={() => openDrawer("wishlist")}
       >
@@ -38,7 +40,7 @@ export function ShopToolbar({ className }: { className?: string }) {
       <Button
         variant="ghost"
         size="icon"
-        aria-label="Giỏ hàng"
+        aria-label={t.shop.cart}
         className="relative"
         onClick={() => openDrawer("cart")}
       >
