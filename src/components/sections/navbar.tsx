@@ -4,6 +4,7 @@ import * as React from "react";
 import { Menu, X, Watch } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ShopToolbar } from "@/components/shop/shop-toolbar";
 import { cn } from "@/lib/utils";
 import { navLinks, siteConfig } from "@/lib/site";
 
@@ -52,10 +53,12 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <ShopToolbar className="hidden sm:flex" />
           <ThemeToggle />
           <a
             href="#newsletter"
             className={cn(buttonVariants(), "hidden md:inline-flex")}
+            data-track="navbar_preorder"
           >
             Đặt trước
           </a>
@@ -85,11 +88,15 @@ export function Navbar() {
                 </a>
               </li>
             ))}
+            <li className="pt-2 flex gap-2 sm:hidden">
+              <ShopToolbar />
+            </li>
             <li className="pt-2">
               <a
                 href="#newsletter"
                 onClick={() => setOpen(false)}
                 className={cn(buttonVariants(), "w-full")}
+                data-track="mobile_preorder"
               >
                 Đặt trước
               </a>

@@ -1,18 +1,7 @@
 import Image from "next/image";
 import { Reveal } from "@/components/motion/reveal";
-
-const colorways = [
-  {
-    name: "Titan Đen",
-    desc: "Bản thể thao mạnh mẽ với dây silicone cao cấp.",
-    src: "/images/helix-hero.webp",
-  },
-  {
-    name: "Vàng Champagne",
-    desc: "Phong cách thanh lịch cho mọi sự kiện.",
-    src: "/images/helix-rose.webp",
-  },
-];
+import { ProductCard } from "@/components/shop/product-actions";
+import { products } from "@/lib/products";
 
 export function Showcase() {
   return (
@@ -54,25 +43,9 @@ export function Showcase() {
         </Reveal>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
-          {colorways.map((c, i) => (
-            <Reveal key={c.name} delay={i * 0.08}>
-              <div className="group overflow-hidden rounded-3xl border border-border/60">
-                <div className="relative aspect-[3/2] overflow-hidden">
-                  <Image
-                    src={c.src}
-                    alt={`Helix One phiên bản ${c.name}`}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 600px"
-                    loading="lazy"
-                    quality={75}
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                </div>
-                <div className="bg-card p-6">
-                  <h3 className="font-heading text-lg font-semibold">{c.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{c.desc}</p>
-                </div>
-              </div>
+          {products.map((p, i) => (
+            <Reveal key={p.id} delay={i * 0.08}>
+              <ProductCard product={p} />
             </Reveal>
           ))}
         </div>

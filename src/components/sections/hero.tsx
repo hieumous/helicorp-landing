@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
+import { HeroShopCta } from "@/components/shop/hero-shop-cta";
 
 const stats = [
   { value: "14 ngày", label: "Thời lượng pin" },
@@ -39,6 +40,7 @@ export function Hero() {
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start">
             <a
               href="#newsletter"
+              data-track="hero_preorder"
               className={cn(
                 buttonVariants({ size: "lg" }),
                 "group h-12 w-full px-7 text-base transition-transform hover:scale-[1.03] active:scale-95 sm:w-auto"
@@ -49,6 +51,7 @@ export function Hero() {
             </a>
             <a
               href="#features"
+              data-track="hero_explore"
               className={cn(
                 buttonVariants({ size: "lg", variant: "outline" }),
                 "h-12 w-full px-7 text-base transition-transform hover:scale-[1.03] active:scale-95 sm:w-auto"
@@ -57,6 +60,8 @@ export function Hero() {
               Khám phá tính năng
             </a>
           </div>
+
+          <HeroShopCta />
 
           <dl className="mt-12 grid grid-cols-3 gap-4 border-t border-border/60 pt-8">
             {stats.map((s) => (

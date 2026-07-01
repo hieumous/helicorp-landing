@@ -4,6 +4,8 @@ import { Hero } from "@/components/sections/hero";
 import { Footer } from "@/components/sections/footer";
 import { LazyScrollProgress } from "@/components/lazy-scroll-progress";
 import { LazyChat } from "@/components/lazy-chat";
+import { LazyCartDrawer } from "@/components/lazy-cart-drawer";
+import { LazyBehaviorTracker } from "@/components/lazy-behavior-tracker";
 import { siteConfig } from "@/lib/site";
 
 const Features = dynamic(
@@ -83,7 +85,9 @@ export default function Home() {
         <Newsletter />
       </main>
       <Footer />
+      <LazyCartDrawer />
       <LazyChat />
+      <LazyBehaviorTracker />
     </>
   );
 }
